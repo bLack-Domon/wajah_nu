@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terimakasih Telah Berkunjung</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='img/smkaja.jpeg') }}"
+    />
+    <style>
+      /* Video background styling */
+      video#backgroundVideo {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+      }
+
+      /* Overlay effect for darkened background */
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.418),
+          rgba(0, 0, 0, 0.9)
+        );
+        z-index: 0;
+      }
+
+      /* Image styling */
+      .rounded-circle {
+        width: 400px;
+        height: 400px;
+        object-fit: cover;
+        object-position: center;
+        border: 5px solid white;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .rounded-circle:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 1);
+      }
+
+      /* Animation styles */
+      .animated {
+        position: relative;
+        opacity: 0;
+        animation: fadeInSlide 2s forwards ease-in-out;
+      }
+
+      .animated.left {
+        animation: slideInLeft 2s forwards ease-in-out;
+      }
+
+      .animated.right {
+        animation: slideInRight 2s forwards ease-in-out;
+      }
+
+      @keyframes slideInLeft {
+        from {
+          opacity: 0;
+          transform: translate(-50%, 0);
+        }
+
+        to {
+          opacity: 1;
+          transform: translate(0, 0);
+        }
+      }
+
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translate(50%, 0);
+        }
+
+        to {
+          opacity: 1;
+          transform: translate(0, 0);
+        }
+      }
+
+      /* Circle for percentage */
+      .percentage-circle {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: #00946b;
+        display: flex;
+        align-items: center; /* Teks di tengah secara vertikal */
+        justify-content: center; /* Teks di tengah secara horizontal */
+        color: white;
+        font-weight: bold;
+        margin: auto;
+        box-shadow: 3px 3px 1px rgba(0, 0, 0, 0);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      /* Responsive typography */
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-shadow: 3px 3px 1px rgb(0, 0, 0);
+      }
+      h1 span {
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-shadow: 3px 3px 1px rgb(0, 0, 0);
+      }
+
+      p {
+        font-size: 1.1rem;
+      }
+
+      @media (max-width: 768px) {
+        .rounded-circle {
+          width: 150px;
+          height: 150px;
+        }
+
+        .percentage-circle {
+          width: 120px;
+          height: 120px;
+          font-size: 1.5rem;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        p {
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Video Background -->
+    <video id="backgroundVideo" autoplay muted loop>
+      <source
+        src="{{ url_for('static', filename='img/b.mp4') }}"
+        type="video/mp4"
+      />
+      Your browser does not support the video tag.
+    </video>
+    <div class="overlay"></div>
+
+    <!-- Content -->
+    <div
+      class="container text-center mt-5"
+      style="position: relative; z-index: 1;"
+    >
+      <h1 class="text-white mb-4 fw-bold">
+        Kesamaan Anda Dengan<span style="color: #00c542"> Ulama NU</span>
+      </h1>
+      <div class="row justify-content-center">
+        <!-- Gambar Pengguna -->
+        <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center">
+          <img
+            src="{{ url_for('static', filename='uploads/' ~ user_image) }}"
+            alt="Gambar Pengguna"
+            class="rounded-circle animated left mb-3"
+          />
+          <p class="text-white fw-bold mb-2">{{ best_match.user_name }}</p>
+        </div>
+
+        <!-- Lingkaran Kesamaan -->
+        <!-- Lingkaran Kesamaan -->
+        <!-- Lingkaran Kesamaan -->
+        <!-- Lingkaran Kesamaan -->
+        <div
+          class="col-lg-4 col-md-6 d-flex align-items-center justify-content-center text-center text-white"
+        >
+          <div>
+            <!-- Teks Kesamaan di atas -->
+            <p class="mb-2" style="font-size: 1.25rem; font-weight: bold">
+              Kesamaan :
+            </p>
+
+            <!-- Lingkaran untuk persentase -->
+            <div
+              class="percentage-circle d-flex align-items-center justify-content-center"
+            >
+              <p class="m-0" style="font-size: 2rem">
+                {{ best_match.similarity_percentage }}%
+              </p>
+            </div>
+
+            <!-- Tombol Kembali ke Home -->
+            <a
+              href="/"
+              class="btn mt-5 text-white"
+              style="
+                font-size: 1rem;
+                font-weight: bold;
+                background: #00946b;
+                box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.911);
+              "
+            >
+              Kembali ke Home
+            </a>
+          </div>
+        </div>
+
+        <!-- Gambar Ulama -->
+        <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center">
+          <img
+            src="{{ url_for('static', filename='reference_images/' ~ ('perempuan' if best_match.gender == 'perempuan' else 'lakilaki') ~ '/' ~ best_match.ref_image) }}"
+            alt="Gambar Ulama"
+            class="rounded-circle animated right mb-3"
+          />
+          <p class="text-white fw-bold">{{ best_match.ulama_name }}</p>
+          <p class="text-white fw-bold">{{ best_match.jabatan }}</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

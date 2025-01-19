@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Ambil Gambar</title>
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='img/smkaja.jpeg') }}"
+    />
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: "Arial", sans-serif;
+        color: #333;
+      }
+
+      video#backgroundVideo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 20px;
+        z-index: -1;
+      }
+
+      .container {
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+        margin: auto;
+        padding: 30px;
+      }
+
+      h1 {
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      #video {
+        width: 100%;
+        border-radius: 30px;
+        padding: 0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        background-color: #ffffff48;
+      }
+
+      .button-29 {
+        align-items: center;
+        appearance: none;
+        background-image: radial-gradient(
+          100% 100% at 100% 0,
+          #48ff11 0,
+          #00946b 100%
+        );
+        border: 0;
+        border-radius: 6px;
+        box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
+          rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
+          rgba(58, 65, 111, 0.5) 0 -3px 0 inset;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        display: inline-flex;
+        font-family: "Montserrat", serif;
+        height: 48px;
+        justify-content: center;
+        line-height: 1;
+        list-style: none;
+        overflow: hidden;
+        padding-left: 16px;
+        padding-right: 16px;
+        position: relative;
+        text-align: left;
+        text-decoration: none;
+        transition: box-shadow 0.15s, transform 0.15s;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        white-space: nowrap;
+        will-change: box-shadow, transform;
+        font-size: 18px;
+      }
+
+      .button-29:hover {
+        box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
+          rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+        transform: translateY(-2px);
+      }
+
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.6),
+          rgba(0, 0, 0, 0.8)
+        );
+        z-index: -1;
+      }
+
+      canvas {
+        display: none;
+        border: #007bff;
+      }
+
+      /* Loader */
+      .loader {
+        color: #ffffff;
+        font-size: 45px;
+        text-indent: -9999em;
+        overflow: hidden;
+        width: 1em;
+        height: 1em;
+        border-radius: 50%;
+        position: relative;
+        transform: translateZ(0);
+        animation: mltShdSpin 1.7s infinite ease, round 1.7s infinite ease;
+      }
+
+      /* Keyframes for loader animation */
+      @keyframes mltShdSpin {
+        0% {
+          box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em,
+            0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+        }
+        5%,
+        95% {
+          box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em,
+            0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+        }
+        10%,
+        59% {
+          box-shadow: 0 -0.83em 0 -0.4em, -0.087em -0.825em 0 -0.42em,
+            -0.173em -0.812em 0 -0.44em, -0.256em -0.789em 0 -0.46em,
+            -0.297em -0.775em 0 -0.477em;
+        }
+        20% {
+          box-shadow: 0 -0.83em 0 -0.4em, -0.338em -0.758em 0 -0.42em,
+            -0.555em -0.617em 0 -0.44em, -0.671em -0.488em 0 -0.46em,
+            -0.749em -0.34em 0 -0.477em;
+        }
+        38% {
+          box-shadow: 0 -0.83em 0 -0.4em, -0.377em -0.74em 0 -0.42em,
+            -0.645em -0.522em 0 -0.44em, -0.775em -0.297em 0 -0.46em,
+            -0.82em -0.09em 0 -0.477em;
+        }
+        100% {
+          box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em,
+            0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+        }
+      }
+
+      @keyframes round {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Center the loader and text */
+      .loader-container {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      /* Text under loader */
+      .loader-text {
+        color: #ffffff;
+        font-size: 18px;
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .top-left-logo {
+        position: absolute;
+        top: 25px;
+        left: 15px;
+        width: 140px;
+        height: auto;
+      }
+
+      .top-right-logo {
+        position: absolute;
+        top: 15px;
+        right: 10px;
+        width: 290px;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+      .top-right-logo img {
+        width: 70px;
+        height: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Video Background -->
+    <video id="backgroundVideo" autoplay muted loop>
+      <source
+        src="{{ url_for('static', filename='img/b.mp4') }}"
+        type="video/mp4"
+      />
+    </video>
+    <div class="overlay"></div>
+    <img
+      src="{{ url_for('static', filename='img/Asrama_IT.png') }}"
+      alt="Logo"
+      class="top-left-logo"
+    />
+    <div class="top-right-logo">
+      <img src="{{ url_for('static', filename='img/expo.png') }}" alt="Logo" />
+      <img src="{{ url_for('static', filename='img/nj.png') }}" alt="Logo" />
+      <img src="{{ url_for('static', filename='img/nu.png') }}" alt="Logo" />
+    </div>
+
+    <div class="container text-center">
+      <form id="formUnggah" action="{{ url_for('upload_file') }}" method="post">
+        <input type="hidden" name="name" value="{{ name }}" />
+        <input type="hidden" name="gender" value="{{ gender }}" />
+        <input type="hidden" id="dataGambar" name="image" />
+        <div class="form-group">
+          <video id="video" width="640" height="480" autoplay></video>
+          <canvas id="kanvas" width="640" height="480"></canvas>
+        </div>
+        <div class="form-group">
+          <button
+            type="button"
+            class="btn button-29 btn-primary"
+            onclick="ambilGambar()"
+          >
+            Potret Gambar
+          </button>
+        </div>
+      </form>
+
+      <!-- Loader -->
+      <div class="loader-container">
+        <div class="loader"></div>
+        <p class="loader-text">Memuat Pencarian</p>
+      </div>
+    </div>
+
+    <script>
+      function ambilGambar() {
+        const video = document.getElementById("video");
+        const kanvas = document.getElementById("kanvas");
+        const konteks = kanvas.getContext("2d");
+
+        // Potret gambar
+        konteks.drawImage(video, 0, 0, kanvas.width, kanvas.height);
+        const dataUrl = kanvas.toDataURL("image/jpeg");
+        document.getElementById("dataGambar").value = dataUrl;
+
+        // Sembunyikan form dan tampilkan loader
+        document.getElementById("formUnggah").style.display = "none";
+        const loader = document.querySelector(".loader-container");
+        loader.style.display = "flex";
+
+        // Submit form
+        setTimeout(() => document.getElementById("formUnggah").submit(), 1500); // Tambahkan delay untuk simulasi
+      }
+
+      function inisialisasi() {
+        const video = document.getElementById("video");
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          navigator.mediaDevices
+            .getUserMedia({ video: true })
+            .then(function (stream) {
+              video.srcObject = stream;
+              video.play();
+            });
+        }
+      }
+
+      window.onload = inisialisasi;
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
